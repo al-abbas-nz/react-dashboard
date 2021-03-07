@@ -1,12 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
-import Menu from './components/Menu';
-import Nav from './components/Nav';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Users from './pages/Users';
+import Users from './pages/users/Users';
 
 function App() {
   return (
