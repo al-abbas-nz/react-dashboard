@@ -4,6 +4,7 @@ import './App.css';
 import Menu from './components/Menu';
 import Nav from './components/Nav';
 import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
 import Register from './pages/Register';
 import Users from './pages/Users';
 
@@ -14,6 +15,7 @@ function App() {
         <Route path={'/'} exact component={Dashboard} />
         <Route path={'/users'} component={Users} />
         <Route path={'/register'} exact component={Register} />
+        <Route path={'/login'} exact component={Login} />
       </BrowserRouter>
     </div>
   );
