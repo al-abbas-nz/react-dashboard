@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import Wrapper from '../../components/Wrapper';
 import { Role } from '../../models/role';
 
-const UserCreate = () => {
+const UserEdit = (props: any) => {
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -14,19 +14,26 @@ const UserCreate = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get('roles');
-      setRoles(data);
+      const response = await axios.get('roles');
+
+      setRoles(response.data);
+
+      const { data } = await axios.get(`users/${props.match.params.id}`);
+      setFirstName(data.first_name);
+      setLastName(data.last_name);
+      setEmail(data.email);
+      setRoleId(data.role_id);
     })();
-  }, []);
+  }, [props.match.params.id]);
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    await axios.post('users', {
+    await axios.put(`users/${props.match.params.id}`, {
       first_name,
       last_name,
       email,
-      role_id: parseInt(role_id) || 1,
+      role_id: parseInt(role_id),
     });
 
     setRedirect(true);
@@ -43,6 +50,7 @@ const UserCreate = () => {
           <label>First Name</label>
           <input
             className='form-control'
+            defaultValue={first_name}
             onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
@@ -50,6 +58,7 @@ const UserCreate = () => {
           <label>Last Name</label>
           <input
             className='form-control'
+            defaultValue={last_name}
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
@@ -57,6 +66,7 @@ const UserCreate = () => {
           <label>Email</label>
           <input
             className='form-control'
+            defaultValue={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -65,6 +75,7 @@ const UserCreate = () => {
           <label>Role</label>
           <select
             className='form-control'
+            value={role_id}
             onChange={(e) => setRoleId(e.target.value)}
           >
             {roles.map((r: Role) => {
@@ -83,4 +94,4 @@ const UserCreate = () => {
   );
 };
 
-export default UserCreate;
+export default UserEdit;

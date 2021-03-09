@@ -43,6 +43,7 @@ const Users = () => {
           Add
         </Link>
       </div>
+
       <div className='table-responsive'>
         <table className='table table-striped table-sm'>
           <thead>
@@ -66,6 +67,12 @@ const Users = () => {
                   <td>{user.role.name}</td>
                   <td>
                     <div className='btn-group mr-2'>
+                      <Link
+                        to={`/users/${user.id}/edit`}
+                        className='btn btn-sm btn-outline-secondary'
+                      >
+                        Edit
+                      </Link>
                       <button
                         className='btn btn-sm btn-outline-secondary'
                         onClick={() => del(user.id)}
