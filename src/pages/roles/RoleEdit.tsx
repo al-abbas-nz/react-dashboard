@@ -35,9 +35,10 @@ export const RoleEdit = (props: any) => {
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    let selectedArray = new Array(selected.join('","'));
     await axios.put(`roles/${props.match.params.id}`, {
       name,
-      permissions: selected,
+      permissions: selectedArray,
     });
     setRedirect(true);
     console.log(permissions);

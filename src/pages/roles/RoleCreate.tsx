@@ -30,11 +30,11 @@ export const RoleCreate = () => {
   };
 
   const submit = async (e: SyntheticEvent) => {
-    // let selectedArray = new Array(selected.join('","'));
+    let selectedArray = new Array(selected.join('","'));
     e.preventDefault();
     await axios.post('roles', {
       name,
-      permissions: selected,
+      permissions: selectedArray,
     });
     setRedirect(true);
   };
