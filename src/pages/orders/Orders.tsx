@@ -5,23 +5,39 @@ import Wrapper from '../../components/Wrapper';
 import { Order } from '../../models/order';
 import { OrderItem } from '../../models/order-item';
 
+const hide = {
+  maxHeight: 0,
+  transition: '500ms ease-in',
+};
+
+const show = {
+  maxHeight: '150px',
+  transition: '500ms ease-out',
+};
+
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
+  const [selected, setSelected] = useState(0);
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get(`orders?page=${page}`);
       setOrders(data.data);
+      console.log(data.data);
       setLastPage(data.meta.last_page);
     })();
   }, [page]);
 
+  const select = (id: number) => {
+    setSelected(selected !== id ? id : 0);
+  };
+
   return (
     <Wrapper>
       <div className='table-responsive'>
-        <table className='table table-striped table-sm'>
+        <table className='table table-sm'>
           <thead>
             <tr>
               <th>#</th>
@@ -41,14 +57,20 @@ const Orders = () => {
                     <td>{o.email}</td>
                     <td>{o.total}</td>
                     <td>
-                      <button className='btn btn-sm btn-outline-secondary'>
+                      <button
+                        className='btn btn-sm btn-outline-secondary'
+                        onClick={() => select(o.id)}
+                      >
                         View
                       </button>
                     </td>
                   </tr>
                   <tr>
                     <td colSpan={5}>
-                      <div>
+                      <div
+                        className='overflow-hidden'
+                        style={selected === o.id ? show : hide}
+                      >
                         <table className='table table-sm'>
                           <thead>
                             <tr>
