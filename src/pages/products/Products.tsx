@@ -21,26 +21,22 @@ const Products = () => {
 
   const del = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this record?')) {
-      await axios.delete(`product/${id}`);
+      await axios.delete(`products/${id}`);
 
       setProducts(products.filter((p: Product) => p.id !== id));
     }
   };
 
-  const next = () => {
-    if (page < lastPage) {
-      setPage(page + 1);
-    }
-  };
-
-  const previous = () => {
-    if (page >= 1) {
-      setPage(page - 1);
-    }
-  };
-
   return (
     <Wrapper>
+      <div className='pt-3 pb-2 mb-3 border-bottom'>
+        <Link
+          to='/products/create'
+          className='btn btn-sm btn-outline-secondary'
+        >
+          Add
+        </Link>
+      </div>
       <div className='table-responsive'>
         <table className='table table-striped table-sm'>
           <thead>
