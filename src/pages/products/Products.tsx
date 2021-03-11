@@ -3,68 +3,78 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Paginator from '../../components/Paginator';
 import Wrapper from '../../components/Wrapper';
-import { User } from '../../models/user';
+import { Product } from '../../models/product';
 
-const Users = () => {
-  const [users, setUsers] = useState([]);
+const Products = () => {
+  const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get(`users?page=${page}`);
-      setUsers(data.data);
+      const { data } = await axios.get(`products?page=${page}`);
+
+      setProducts(data.data);
       setLastPage(data.meta.last_page);
     })();
   }, [page]);
 
   const del = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this record?')) {
-      await axios.delete(`users/${id}`);
-      setUsers(users.filter((u: User) => u.id !== id));
+      await axios.delete(`product/${id}`);
+
+      setProducts(products.filter((p: Product) => p.id !== id));
+    }
+  };
+
+  const next = () => {
+    if (page < lastPage) {
+      setPage(page + 1);
+    }
+  };
+
+  const previous = () => {
+    if (page >= 1) {
+      setPage(page - 1);
     }
   };
 
   return (
     <Wrapper>
-      <div className='pt-3 pb-2 mb-3 border-bottom'>
-        <Link to='/users/create' className='btn btn-sm btn-outline-secondary'>
-          Add
-        </Link>
-      </div>
-
       <div className='table-responsive'>
         <table className='table table-striped table-sm'>
           <thead>
             <tr>
               <th>#</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Price</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user: User) => {
+            {products.map((p: Product) => {
               return (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
+                <tr key={p.id}>
+                  <td>{p.id}</td>
                   <td>
-                    {user.first_name} {user.last_name}
+                    <img src={p.image} alt={p.title} width='50' />
                   </td>
-                  <td>{user.email}</td>
-                  <td>{user.role.name}</td>
+                  <td>{p.title}</td>
+                  <td>{p.description}</td>
+                  <td>{p.price}</td>
                   <td>
                     <div className='btn-group mr-2'>
                       <Link
-                        to={`/users/${user.id}/edit`}
+                        to={`/products/${p.id}/edit`}
                         className='btn btn-sm btn-outline-secondary'
                       >
                         Edit
                       </Link>
                       <button
                         className='btn btn-sm btn-outline-secondary'
-                        onClick={() => del(user.id)}
+                        onClick={() => del(p.id)}
                       >
                         Delete
                       </button>
@@ -81,4 +91,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Products;
