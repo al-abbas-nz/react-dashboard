@@ -1,25 +1,9 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { User } from '../models/user';
-
-const Nav = () => {
-  const [user, setUser] = useState(new User());
-  useEffect(() => {
-    (async () => {
-      const { data } = await axios.get('user');
-      setUser(
-        new User(
-          data.id,
-          data.first_name,
-          data.last_name,
-          data.email,
-          data.role
-        )
-      );
-    })();
-  }, []);
-
+const Nav = (props: { user: User }) => {
   const logout = async () => {
     await axios.post('logout', {});
   };
@@ -31,7 +15,7 @@ const Nav = () => {
       </Link>
       <ul className='my-2 my-md-0 mr-md-3'>
         <Link className='p-2 text-white' to={'/profile'}>
-          {user.name}
+          {props.user.name}
         </Link>
         <Link className='p-2 text-white' to={'/login'} onClick={logout}>
           Sign out
@@ -41,4 +25,10 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+const mapStateToProps = (state: { user: User }) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(Nav);
