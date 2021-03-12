@@ -14,12 +14,14 @@ import Roles from './pages/roles/Roles';
 import UserCreate from './pages/users/UserCreate';
 import UserEdit from './pages/users/UserEdit';
 import Users from './pages/users/Users';
+import { Profile } from './pages/Profile';
 
 function App() {
   return (
     <div className='App'>
       <BrowserRouter>
         <Route path={'/'} exact component={Dashboard} />
+        <Route path={'/profile'} exact component={Profile} />
         <Route path={'/register'} exact component={Register} />
         <Route path={'/login'} component={Login} />
         <Route path={'/users'} exact component={Users} />
